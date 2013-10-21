@@ -1,3 +1,11 @@
+Repository Contents
+===
+<b>Group 9.Earthquakes Project.py</b><br>
+Code in Python format
+<br><br>
+<b>Group 9.Earthquakes Project.ipynb</b><br>
+Code in iPython Notebook format
+
 Loading Files
 ===
 ###To access our project code please follow the directions below:###
