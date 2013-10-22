@@ -1,9 +1,9 @@
 Repository Contents
 ===
-<b>Group 9.Earthquakes Project.py</b><br>
+<b>Group 9.Earthquake Project.py</b><br>
 Code in Python format
 <br><br>
-<b>Group 9.Earthquakes Project.ipynb</b><br>
+<b>Group 9.Earthquake Project.ipynb</b><br>
 Code in iPython Notebook format
 
 Loading Files
