@@ -11,7 +11,7 @@ import os
 
 USE_CACHE = True
 CACHE_NAME = 'geo_cache.csv'
-#url = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson'
+
 url = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'
 
 if USE_CACHE and not os.path.isfile(CACHE_NAME):
@@ -30,16 +30,18 @@ if not USE_CACHE:
     Lat_list = []
     Lon_list = []
     Depth_list = []
+    Mag_list = []
     for quake in features:
         Src_list.append(quake['properties']['net'])
         Eqid_list.append(quake['properties']['code'])
         time_list.append(quake['properties']['time'])
         nst_list.append(quake['properties']['nst'])
         region_list.append(quake['properties']['place'])
+        Mag_list.append(quake['properties']['mag'])
         Lon_list.append(quake['geometry']['coordinates'][0])
         Lat_list.append(quake['geometry']['coordinates'][1])
         Depth_list.append(quake['geometry']['coordinates'][2])
-    data = pd.DataFrame({'Src':Src_list, 'Eqid':Eqid_list, 'time':time_list, 'nst':nst_list, 'region':region_list, 'Lat':Lat_list, 'Lon':Lon_list, 'Depth':Depth_list})
+    data = pd.DataFrame({'Src':Src_list, 'Eqid':Eqid_list, 'time':time_list, 'nst':nst_list, 'region':region_list, 'Lat':Lat_list, 'Lon':Lon_list, 'Depth':Depth_list, 'Mag':Mag_list})
     #cleaned_data = data.dropna()
     clean_data = data
     clean_data.to_csv(CACHE_NAME, index = False)
@@ -79,11 +81,32 @@ def plot_quakes(quakes):
     m.drawcountries()
     m.fillcontinents(color='coral',lake_color='blue')
     m.drawmapboundary(fill_color='aqua')
+
+    mags = quakes.Mag
+    lons = quakes.Lon
+    lats = quakes.Lat
     x, y = m(quakes.Lon, quakes.Lat)
-    m.plot(x, y, 'k.')
+    #Documentation from http://matplotlib.org/basemap/api/basemap_api.html#mpl_toolkits.basemap.Basemap.plot
+    #Additional hints from http://stackoverflow.com/questions/8409095/matplotlib-set-markers-for-individual-points-on-a-line
+
+    for key in x.keys(): #Note that an entry's data in the series share the same key.
+        m.plot(x[key], y[key], marker='o', markersize=mags[key]*4, color='b', alpha = 0.5)
+        #alpha is transparency
+        #color is blue
+        #marker size is magnitude * 4
+        #marker is circular shaped
+    #x, y = m(quakes.Lon, quakes.Lat)
+    #m.plot(x, y, 'k.')
     return m
 
-plot_quakes(clean_data)
+plot_quakes(alaska)
+#plot_quakes(clean_data)
+
+# <codecell>
+
+
+# <codecell>
+
 
 # <codecell>
 
